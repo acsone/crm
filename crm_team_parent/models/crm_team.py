@@ -16,7 +16,9 @@ class CrmTeam(models.Model):
             if current.parent_id:
                 if current.parent_id == new_child:
                     raise ValidationError(
-                        "Wrong Parent Team : No loop allowed in the teams' hierarchy."
+                        _(
+                            "Wrong Parent Team : No loop allowed in the teams' hierarchy."
+                        )
                     )
                 else:
                     _check_for_loop(new_child, current.parent_id)
