@@ -19,6 +19,7 @@ class TestCrmTeamParent(TransactionCase):
             {"name": "Team C", "parent_id": self.child.id}
         )
         self.assertEqual(self.parent, grandchild.parent_id.parent_id)
+        self.assertTrue(grandchild in self.child.child_ids)
 
     def test_hierarchy_loop(self):
         with self.assertRaises(ParentLoopError):
