@@ -16,7 +16,9 @@ class CrmTeam(models.Model):
     parent_path = fields.Char(index=True)
     parent_id = fields.Many2one(comodel_name="crm.team", string="Parent Team")
     child_ids = fields.One2many(
-        comodel_name="crm.team", inverse_name="parent_id", string="Children Sales Team"
+        comodel_name="crm.team",
+        inverse_name="parent_id",
+        string="Children Sales Team",
     )
 
     @api.constrains("parent_id")
@@ -31,5 +33,8 @@ class CrmTeam(models.Model):
         for rec in self.filtered("parent_id"):
             if not _check_for_loop(rec, rec):
                 raise ParentLoopError(
-                    _("Wrong Parent Team : No loop allowed in the teams' hierarchy.")
+                    _(
+                        "Wrong Parent Team: "
+                        "No loop allowed in the teams' hierarchy."
+                    )
                 )

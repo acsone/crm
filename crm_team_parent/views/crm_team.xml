@@ -27,7 +27,7 @@
             <xpath expr="//notebook/page[@name='dashboard']" position="after">
                 <page string="Children Teams" name="children">
                     <field name="child_ids">
-                        <tree string="Children Teams" delete="false" create="false">
+                        <tree delete="false" create="false">
                             <field name="name"/>
                             <field name="user_id"/>
                         </tree>
