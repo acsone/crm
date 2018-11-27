@@ -5,6 +5,10 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 
+class ParentLoopError(ValidationError):
+    pass
+
+
 class CrmTeam(models.Model):
 
     _inherit = "crm.team"
@@ -15,7 +19,7 @@ class CrmTeam(models.Model):
         def _check_for_loop(new_child, current):
             if current.parent_id:
                 if current.parent_id == new_child:
-                    raise ValidationError(
+                    raise ParentLoopError(
                         _(
                             "Wrong Parent Team : No loop allowed in the teams' hierarchy."
                         )
@@ -24,4 +28,3 @@ class CrmTeam(models.Model):
                     _check_for_loop(new_child, current.parent_id)
 
         _check_for_loop(self, self)
-
