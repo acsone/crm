@@ -12,7 +12,9 @@ class ParentLoopError(ValidationError):
 class CrmTeam(models.Model):
 
     _inherit = "crm.team"
-    parent_id = fields.Many2one("crm.team", string="Parent Team")
+    _parent_store = True
+    parent_path = fields.Char(index=True)
+    parent_id = fields.Many2one(comodel_name="crm.team", string="Parent Team")
 
     @api.constrains("parent_id")
     def _constrains_parent_id(self):
