@@ -35,7 +35,6 @@ class CrmSalespersonPlannerVisit(models.Model):
     )
     company_id = fields.Many2one(
         comodel_name="res.company",
-        string="Company",
         default=lambda self: self.env.company,
     )
     user_id = fields.Many2one(
@@ -71,16 +70,14 @@ class CrmSalespersonPlannerVisit(models.Model):
         default="draft",
     )
     close_reason_id = fields.Many2one(
-        comodel_name="crm.salesperson.planner.visit.close.reason", string="Close Reason"
+        comodel_name="crm.salesperson.planner.visit.close.reason",
     )
     close_reason_image = fields.Image(max_width=1024, max_height=1024, attachment=True)
     close_reason_notes = fields.Text()
     visit_template_id = fields.Many2one(
-        comodel_name="crm.salesperson.planner.visit.template", string="Visit Template"
+        comodel_name="crm.salesperson.planner.visit.template"
     )
-    calendar_event_id = fields.Many2one(
-        comodel_name="calendar.event", string="Calendar Event"
-    )
+    calendar_event_id = fields.Many2one(comodel_name="calendar.event")
 
     _sql_constraints = [
         (
@@ -179,9 +176,12 @@ class CrmSalespersonPlannerVisit(models.Model):
             }
         )
 
-    def unlink(self):
+    def _check_visits_state(self):
         if any(sel.state not in ["draft", "cancel"] for sel in self):
             raise ValidationError(self.env._("Visits must be in cancelled state"))
+
+    def unlink(self):
+        self._check_visits_state()
         return super().unlink()
 
     def write(self, values):

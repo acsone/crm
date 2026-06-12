@@ -60,7 +60,6 @@ class CrmSalespersonPlannerVisitTemplate(models.Model):
     )
     company_id = fields.Many2one(
         comodel_name="res.company",
-        string="Company",
         default=lambda self: self.env.company,
     )
     categ_ids = fields.Many2many(comodel_name="calendar.event.type", string="Tags")
