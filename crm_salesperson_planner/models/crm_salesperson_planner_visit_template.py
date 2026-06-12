@@ -60,7 +60,6 @@ class CrmSalespersonPlannerVisitTemplate(models.Model):
     )
     company_id = fields.Many2one(
         comodel_name="res.company",
-        string="Company",
         default=lambda self: self.env.company,
     )
     categ_ids = fields.Many2many(comodel_name="calendar.event.type", string="Tags")
@@ -274,9 +273,7 @@ class CrmSalespersonPlannerVisitTemplate(models.Model):
     def _prepare_crm_salesperson_planner_visit_vals(self, dates):
         return [
             {
-                "partner_id": (
-                    fields.first(self.partner_ids).id if self.partner_ids else False
-                ),
+                "partner_id": (self.partner_ids[:1].id if self.partner_ids else False),
                 "date": date,
                 "sequence": self.sequence,
                 "user_id": self.user_id.id,
